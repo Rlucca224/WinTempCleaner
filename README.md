@@ -21,7 +21,7 @@ Inspired by the same feature found in **Windows Ghost Spectre**.
 Open PowerShell **as Administrator** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex
 ```
 
 That's it. Right-click your desktop and the option is there.
@@ -35,7 +35,7 @@ That's it. Right-click your desktop and the option is there.
 Open PowerShell **as Administrator** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main/uninstall.ps1 | iex
+irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/uninstall.ps1 | iex
 ```
 
 This removes the registry key and all files. Your system will be left **exactly as it was** before installation.
