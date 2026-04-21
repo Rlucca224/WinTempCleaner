@@ -16,26 +16,29 @@ Inspired by the same feature found in **Windows Ghost Spectre**.
 
 ---
 
-## 🗂️ Files
+## 🚀 Install
 
-| File | Description |
-|------|-------------|
-| `INSTALL.bat` | Installs the context menu entry (run as Administrator) |
-| `UNINSTALL.bat` | Completely removes everything the installer added |
-| `DeleteTemp.ps1` | PowerShell script that performs the actual cleanup |
-| `Launcher.vbs` | Silent VBScript launcher — prevents any visible window from appearing |
-| `UPDATE_SILENT.reg` | Patch for users upgrading from a previous version |
+Open PowerShell **as Administrator** and run:
+
+```powershell
+irm https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main/install.ps1 | iex
+```
+
+That's it. Right-click your desktop and the option is there.
+
+> ⚠️ Windows UAC will prompt for confirmation when you use the option. This is expected and cannot be bypassed — it's a Windows security feature required to delete system temp files.
 
 ---
 
-## 🚀 Installation
+## ❌ Uninstall
 
-1. Download or clone this repository
-2. Place all files in the **same folder**
-3. Right-click `INSTALL.bat` → **Run as administrator**
-4. Right-click your desktop and enjoy the new option
+Open PowerShell **as Administrator** and run:
 
-> ⚠️ Windows UAC will prompt for confirmation when you use the option. This is expected and cannot be bypassed — it's a Windows security feature required to delete system temp files.
+```powershell
+irm https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main/uninstall.ps1 | iex
+```
+
+This removes the registry key and all files. Your system will be left **exactly as it was** before installation.
 
 ---
 
@@ -70,15 +73,14 @@ Right-click Desktop → "Delete Temporary Files"
 
 ---
 
-## ❌ Uninstall
+## 🗂️ Repository files
 
-Right-click `UNINSTALL.bat` → **Run as administrator**
-
-This removes:
-- The registry key `HKCR\DesktopBackground\Shell\DeleteTemp`
-- The folder `C:\ProgramData\DeleteTemp\` and all its contents
-
-Your system will be left **exactly as it was** before installation.
+| File | Description |
+|------|-------------|
+| `install.ps1` | Downloads everything and sets up the context menu entry |
+| `uninstall.ps1` | Completely removes everything the installer added |
+| `DeleteTemp.ps1` | PowerShell script that performs the actual cleanup |
+| `Launcher.vbs` | Silent VBScript launcher — prevents any visible window from appearing |
 
 ---
 
