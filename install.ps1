@@ -78,7 +78,6 @@ try {
     }
     Set-ItemProperty -Path $regKey -Name "(Default)"    -Value "Delete Temporary Files"
     Set-ItemProperty -Path $regKey -Name "Icon"         -Value "C:\ProgramData\DeleteTemp\icon.ico"
-    Set-ItemProperty -Path $regKey -Name "HasLUAShield" -Value ""
 
     # Remove Position if it exists from old installs
     Remove-ItemProperty -Path $regKey -Name "Position" -ErrorAction SilentlyContinue

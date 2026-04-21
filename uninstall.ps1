@@ -5,8 +5,8 @@
 
 $ErrorActionPreference = "Stop"
 
-$destDir   = "C:\ProgramData\DeleteTemp"
-$regPSDrive = "HKCR"
+$destDir = "C:\ProgramData\DeleteTemp"
+$regKey  = "HKCR:\DesktopBackground\Shell\DeleteTemp"
 
 # ── Banner ───────────────────────────────────────────────────────
 Clear-Host
@@ -31,17 +31,11 @@ if (-not $isAdmin) {
 }
 Write-Host "  [+] Running as Administrator." -ForegroundColor Green
 
-# ── Map HKCR PSDrive if not already mapped ────────────────────────
-if (-not (Get-PSDrive -Name $regPSDrive -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name $regPSDrive -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
-}
-$regKey = "HKCR:\DesktopBackground\Shell\DeleteTemp"
-
 # ── Check if installed ────────────────────────────────────────────
 Write-Host ""
 Write-Host "  [*] Checking if WinTempCleaner is installed..." -ForegroundColor Yellow
-$regExists = Test-Path $regKey
-$dirExists = Test-Path $destDir
+$regExists  = Test-Path $regKey
+$dirExists  = Test-Path $destDir
 
 if (-not $regExists -and -not $dirExists) {
     Write-Host "  [!] WinTempCleaner does not appear to be installed." -ForegroundColor Red
