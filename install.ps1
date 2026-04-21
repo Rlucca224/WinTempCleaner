@@ -1,12 +1,12 @@
 # ================================================================
 #  WinTempCleaner - Installer
-#  Usage: irm https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main/install.ps1 | iex
+#  Usage: irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex
 # ================================================================
 
 $ErrorActionPreference = "Stop"
 
 # ── Config ───────────────────────────────────────────────────────
-$repoBase  = "https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main"
+$repoBase  = "https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main"
 $destDir   = "C:\ProgramData\DeleteTemp"
 $files     = @("DeleteTemp.ps1", "Launcher.vbs", "icon.ico")
 $regKey    = "HKCR:\DesktopBackground\Shell\DeleteTemp"
