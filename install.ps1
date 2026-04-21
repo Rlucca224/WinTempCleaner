@@ -1,14 +1,14 @@
 # ================================================================
 #  WinTempCleaner - Installer
-#  Usage: irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex
+#  Usage: irm https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main/install.ps1 | iex
 # ================================================================
 
 $ErrorActionPreference = "Stop"
 
 # ── Config ───────────────────────────────────────────────────────
-$repoBase  = "https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main"
+$repoBase  = "https://raw.githubusercontent.com/TuUsuario/WinTempCleaner/main"
 $destDir   = "C:\ProgramData\DeleteTemp"
-$files     = @("DeleteTemp.ps1", "Launcher.vbs")
+$files     = @("DeleteTemp.ps1", "Launcher.vbs", "icon.ico")
 $regKey    = "HKCR:\DesktopBackground\Shell\DeleteTemp"
 
 # ── Banner ───────────────────────────────────────────────────────
@@ -70,7 +70,7 @@ try {
         New-Item -Path $regKey -Force | Out-Null
     }
     Set-ItemProperty -Path $regKey -Name "(Default)"    -Value "Delete Temporary Files"
-    Set-ItemProperty -Path $regKey -Name "Icon"         -Value "imageres.dll,-5322"
+    Set-ItemProperty -Path $regKey -Name "Icon"         -Value "C:\ProgramData\DeleteTemp\icon.ico"
     Set-ItemProperty -Path $regKey -Name "HasLUAShield" -Value ""
 
     # Remove Position if it exists from old installs
