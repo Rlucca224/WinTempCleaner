@@ -9,7 +9,8 @@ $ErrorActionPreference = "Stop"
 $repoBase  = "https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main"
 $destDir   = "C:\ProgramData\DeleteTemp"
 $files     = @("DeleteTemp.ps1", "Launcher.vbs", "icon.ico")
-$regKey    = "HKCR:\DesktopBackground\Shell\DeleteTemp"
+$regPath   = "HKEY_CLASSES_ROOT\DesktopBackground\Shell\DeleteTemp"
+$regPSDrive = "HKCR"
 
 # ── Banner ───────────────────────────────────────────────────────
 Clear-Host
@@ -33,6 +34,12 @@ if (-not $isAdmin) {
     exit 1
 }
 Write-Host "  [+] Running as Administrator." -ForegroundColor Green
+
+# ── Map HKCR PSDrive if not already mapped ────────────────────────
+if (-not (Get-PSDrive -Name $regPSDrive -ErrorAction SilentlyContinue)) {
+    New-PSDrive -Name $regPSDrive -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+}
+$regKey = "HKCR:\DesktopBackground\Shell\DeleteTemp"
 
 # ── Create destination folder ─────────────────────────────────────
 Write-Host ""
