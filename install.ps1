@@ -20,7 +20,20 @@ Write-Host "         WinTempCleaner  -  Installer          " -ForegroundColor Cy
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
 
-# ── Admin check ──────────────────────────────────────────────────
+# ── Admin check — auto re-launch as Administrator ────────────────
+$isAdmin = ([Security.Principal.WindowsPrincipal] `
+            [Security.Principal.WindowsIdentity]::GetCurrent() `
+           ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $isAdmin) {
+    Write-Host "  [!] Not running as Administrator. Relaunching elevated..." -ForegroundColor Yellow
+    Start-Process powershell.exe -ArgumentList `
+        "-NoProfile -ExecutionPolicy Bypass -Command `"irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex`"" `
+        -Verb RunAs
+    exit
+}
+Write-Host "  [+] Running as Administrator." -ForegroundColor Green
+
 Write-Host "  [*] Checking administrator privileges..." -ForegroundColor Yellow
 $isAdmin = ([Security.Principal.WindowsPrincipal] `
             [Security.Principal.WindowsIdentity]::GetCurrent() `
