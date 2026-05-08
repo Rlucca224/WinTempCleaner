@@ -116,8 +116,8 @@ if (Test-Path $regKey) {
 }
  
 # ── Result ────────────────────────────────────────────────────────
-Write-Host ""
 Write-Host "  =============================================" -ForegroundColor Cyan
+Write-Host ""
 if ($allGood) {
     Write-Host "   Installation complete!" -ForegroundColor Green
     Write-Host "   Right-click your Desktop to use the new option." -ForegroundColor Green
@@ -127,3 +127,4 @@ if ($allGood) {
 }
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
+Read-Host "  Press Enter to exit"
