@@ -1,5 +1,3 @@
-Copiar
-
 # ================================================================
 #  WinTempCleaner - Installer
 #  Usage: irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex
