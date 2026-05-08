@@ -13,7 +13,6 @@ $rutas = @(
     "$env:LOCALAPPDATA\Microsoft\Windows\Temporary Internet Files",
     "$env:LOCALAPPDATA\CrashDumps",
     "$env:SystemRoot\Temp",
-    "$env:SystemRoot\Prefetch",
     "$env:SystemRoot\Logs\CBS",
     "$env:SystemRoot\Minidump",
     "$env:SystemRoot\SoftwareDistribution\Download"
