@@ -15,7 +15,7 @@ $regPSDrive = "HKCR"
 Clear-Host
 Write-Host ""
 Write-Host "  =============================================" -ForegroundColor Cyan
-Write-Host "         WinTempCleaner  -  Installer          " -ForegroundColor Cyan
+Write-Host "       WinTempCleaner v1.4.0  -  Installer     " -ForegroundColor Cyan
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
  
