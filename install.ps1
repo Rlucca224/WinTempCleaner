@@ -1,17 +1,18 @@
+Copiar
+
 # ================================================================
 #  WinTempCleaner - Installer
 #  Usage: irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex
 # ================================================================
-
+ 
 $ErrorActionPreference = "Stop"
-
+ 
 # ── Config ───────────────────────────────────────────────────────
-$repoBase  = "https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main"
-$destDir   = "C:\ProgramData\DeleteTemp"
-$files     = @("DeleteTemp.ps1", "Launcher.vbs", "icon.ico")
-$regPath   = "HKEY_CLASSES_ROOT\DesktopBackground\Shell\DeleteTemp"
+$repoBase   = "https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main"
+$destDir    = "C:\ProgramData\DeleteTemp"
+$files      = @("DeleteTemp.ps1", "Launcher.vbs", "icon.ico")
 $regPSDrive = "HKCR"
-
+ 
 # ── Banner ───────────────────────────────────────────────────────
 Clear-Host
 Write-Host ""
@@ -19,12 +20,13 @@ Write-Host "  =============================================" -ForegroundColor Cy
 Write-Host "         WinTempCleaner  -  Installer          " -ForegroundColor Cyan
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
-
-# ── Admin check — auto re-launch as Administrator ────────────────
+ 
+# ── Admin check — auto re-launch if not elevated ─────────────────
+Write-Host "  [*] Checking administrator privileges..." -ForegroundColor Yellow
 $isAdmin = ([Security.Principal.WindowsPrincipal] `
             [Security.Principal.WindowsIdentity]::GetCurrent() `
            ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
+ 
 if (-not $isAdmin) {
     Write-Host "  [!] Not running as Administrator. Relaunching elevated..." -ForegroundColor Yellow
     Start-Process powershell.exe -ArgumentList `
@@ -33,27 +35,13 @@ if (-not $isAdmin) {
     exit
 }
 Write-Host "  [+] Running as Administrator." -ForegroundColor Green
-
-Write-Host "  [*] Checking administrator privileges..." -ForegroundColor Yellow
-$isAdmin = ([Security.Principal.WindowsPrincipal] `
-            [Security.Principal.WindowsIdentity]::GetCurrent() `
-           ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-if (-not $isAdmin) {
-    Write-Host ""
-    Write-Host "  [!] ERROR: This script must be run as Administrator." -ForegroundColor Red
-    Write-Host "      Right-click PowerShell -> Run as administrator, then try again." -ForegroundColor Red
-    Write-Host ""
-    exit 1
-}
-Write-Host "  [+] Running as Administrator." -ForegroundColor Green
-
+ 
 # ── Map HKCR PSDrive if not already mapped ────────────────────────
 if (-not (Get-PSDrive -Name $regPSDrive -ErrorAction SilentlyContinue)) {
     New-PSDrive -Name $regPSDrive -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
 }
 $regKey = "HKCR:\DesktopBackground\Shell\DeleteTemp"
-
+ 
 # ── Create destination folder ─────────────────────────────────────
 Write-Host ""
 Write-Host "  [*] Creating destination folder..." -ForegroundColor Yellow
@@ -63,7 +51,7 @@ if (-not (Test-Path $destDir)) {
 } else {
     Write-Host "  [+] Already exists: $destDir" -ForegroundColor Green
 }
-
+ 
 # ── Download files ────────────────────────────────────────────────
 Write-Host ""
 Write-Host "  [*] Downloading files from GitHub..." -ForegroundColor Yellow
@@ -79,41 +67,37 @@ foreach ($file in $files) {
         exit 1
     }
 }
-
+ 
 # ── Registry entries ──────────────────────────────────────────────
 Write-Host ""
 Write-Host "  [*] Writing registry entries..." -ForegroundColor Yellow
-
+ 
 try {
-    # Create main key
     if (-not (Test-Path $regKey)) {
         New-Item -Path $regKey -Force | Out-Null
     }
-    Set-ItemProperty -Path $regKey -Name "(Default)"    -Value "Delete Temporary Files"
-    Set-ItemProperty -Path $regKey -Name "Icon"         -Value "C:\ProgramData\DeleteTemp\icon.ico"
-
-    # Remove Position if it exists from old installs
+    Set-ItemProperty -Path $regKey -Name "(Default)" -Value "Delete Temporary Files"
+    Set-ItemProperty -Path $regKey -Name "Icon"      -Value "C:\ProgramData\DeleteTemp\icon.ico"
     Remove-ItemProperty -Path $regKey -Name "Position" -ErrorAction SilentlyContinue
-
-    # Create command subkey
+ 
     $cmdKey = "$regKey\command"
     if (-not (Test-Path $cmdKey)) {
         New-Item -Path $cmdKey -Force | Out-Null
     }
     Set-ItemProperty -Path $cmdKey -Name "(Default)" `
         -Value "wscript.exe `"C:\ProgramData\DeleteTemp\Launcher.vbs`""
-
+ 
     Write-Host "  [+] Registry entries written successfully." -ForegroundColor Green
 } catch {
     Write-Host "  [!] ERROR writing registry: $_" -ForegroundColor Red
     exit 1
 }
-
+ 
 # ── Verify ────────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "  [*] Verifying installation..." -ForegroundColor Yellow
 $allGood = $true
-
+ 
 foreach ($file in $files) {
     $path = "$destDir\$file"
     if (Test-Path $path) {
@@ -123,14 +107,14 @@ foreach ($file in $files) {
         $allGood = $false
     }
 }
-
+ 
 if (Test-Path $regKey) {
     Write-Host "  [+] Registry key verified." -ForegroundColor Green
 } else {
     Write-Host "  [!] Registry key missing." -ForegroundColor Red
     $allGood = $false
 }
-
+ 
 # ── Result ────────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "  =============================================" -ForegroundColor Cyan
