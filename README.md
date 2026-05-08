@@ -46,10 +46,16 @@ This removes the registry key and all files. Your system will be left **exactly 
 
 | Folder | Description |
 |--------|-------------|
-| `%LOCALAPPDATA%\Temp` | User local temp files |
 | `%TEMP%` / `%TMP%` | Standard temp environment paths |
+| `%LOCALAPPDATA%\Temp` | User local temp files |
+| `%LOCALAPPDATA%\Microsoft\Windows\INetCache` | Edge / IE legacy cache |
+| `%LOCALAPPDATA%\Microsoft\Windows\Temporary Internet Files` | Temporary internet files |
+| `%LOCALAPPDATA%\CrashDumps` | Application crash dumps |
 | `C:\Windows\Temp` | System-wide temp folder |
 | `C:\Windows\Prefetch` | Windows prefetch cache |
+| `C:\Windows\Logs\CBS` | Component Based Servicing logs |
+| `C:\Windows\Minidump` | Blue screen memory dumps |
+| `C:\Windows\SoftwareDistribution\Download` | Already-installed Windows Update files |
 
 After cleanup, a **toast notification** shows how many items were removed and how many MB were freed.
 
