@@ -18,13 +18,13 @@ Inspired by the same feature found in **Windows Ghost Spectre**.
 
 ## 🚀 Install
 
-Open PowerShell **as Administrator** and run:
+Open PowerShell and run:
 
 ```powershell
 irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/install.ps1 | iex
 ```
 
-That's it. Right-click your desktop and the option is there.
+That's it. If PowerShell is not running as Administrator, it will automatically relaunch elevated. Right-click your desktop and the option is there.
 
 > ⚠️ Windows UAC will prompt for confirmation when you use the option. This is expected and cannot be bypassed — it's a Windows security feature required to delete system temp files.
 
@@ -32,7 +32,7 @@ That's it. Right-click your desktop and the option is there.
 
 ## ❌ Uninstall
 
-Open PowerShell **as Administrator** and run:
+Open PowerShell and run:
 
 ```powershell
 irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/uninstall.ps1 | iex
@@ -52,10 +52,11 @@ This removes the registry key and all files. Your system will be left **exactly 
 | `%LOCALAPPDATA%\Microsoft\Windows\Temporary Internet Files` | Temporary internet files |
 | `%LOCALAPPDATA%\CrashDumps` | Application crash dumps |
 | `C:\Windows\Temp` | System-wide temp folder |
-| `C:\Windows\Prefetch` | Windows prefetch cache |
 | `C:\Windows\Logs\CBS` | Component Based Servicing logs |
 | `C:\Windows\Minidump` | Blue screen memory dumps |
 | `C:\Windows\SoftwareDistribution\Download` | Already-installed Windows Update files |
+
+> **Note:** `C:\Windows\Prefetch` is intentionally excluded to avoid game shader recompilation on next launch.
 
 After cleanup, a **toast notification** shows how many items were removed and how many MB were freed.
 
@@ -64,17 +65,17 @@ After cleanup, a **toast notification** shows how many items were removed and ho
 ## 🔧 How it works
 
 ```
-Right-click Desktop → "Delete Temporary Files"
-         ↓
+Right-click Desktop -> "Delete Temporary Files"
+         |
    wscript.exe  (invisible, runs in background)
-         ↓
+         |
    Launcher.vbs  (launches PowerShell with WindowStyle = 0)
-         ↓
+         |
    UAC prompt  (Windows elevation confirmation)
-         ↓
+         |
    DeleteTemp.ps1  (cleans all temp folders silently)
-         ↓
-   Toast notification  (done ✓)
+         |
+   Toast notification  (done)
 ```
 
 ---
