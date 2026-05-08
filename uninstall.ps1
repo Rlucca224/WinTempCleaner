@@ -5,8 +5,8 @@
 
 $ErrorActionPreference = "Stop"
 
-$destDir = "C:\ProgramData\DeleteTemp"
-$regKey  = "HKCR:\DesktopBackground\Shell\DeleteTemp"
+$destDir    = "C:\ProgramData\DeleteTemp"
+$regPSDrive = "HKCR"
 
 # ── Banner ───────────────────────────────────────────────────────
 Clear-Host
@@ -16,26 +16,32 @@ Write-Host "         WinTempCleaner  -  Uninstaller        " -ForegroundColor Cy
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
 
-# ── Admin check ──────────────────────────────────────────────────
+# ── Admin check — auto re-launch if not elevated ─────────────────
 Write-Host "  [*] Checking administrator privileges..." -ForegroundColor Yellow
 $isAdmin = ([Security.Principal.WindowsPrincipal] `
             [Security.Principal.WindowsIdentity]::GetCurrent() `
            ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
-    Write-Host ""
-    Write-Host "  [!] ERROR: This script must be run as Administrator." -ForegroundColor Red
-    Write-Host "      Right-click PowerShell -> Run as administrator, then try again." -ForegroundColor Red
-    Write-Host ""
-    exit 1
+    Write-Host "  [!] Not running as Administrator. Relaunching elevated..." -ForegroundColor Yellow
+    Start-Process powershell.exe -ArgumentList `
+        "-NoProfile -ExecutionPolicy Bypass -Command `"irm https://raw.githubusercontent.com/Rlucca224/WinTempCleaner/main/uninstall.ps1 | iex`"" `
+        -Verb RunAs
+    exit
 }
 Write-Host "  [+] Running as Administrator." -ForegroundColor Green
+
+# ── Map HKCR PSDrive if not already mapped ────────────────────────
+if (-not (Get-PSDrive -Name $regPSDrive -ErrorAction SilentlyContinue)) {
+    New-PSDrive -Name $regPSDrive -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+}
+$regKey = "HKCR:\DesktopBackground\Shell\DeleteTemp"
 
 # ── Check if installed ────────────────────────────────────────────
 Write-Host ""
 Write-Host "  [*] Checking if WinTempCleaner is installed..." -ForegroundColor Yellow
-$regExists  = Test-Path $regKey
-$dirExists  = Test-Path $destDir
+$regExists = Test-Path $regKey
+$dirExists = Test-Path $destDir
 
 if (-not $regExists -and -not $dirExists) {
     Write-Host "  [!] WinTempCleaner does not appear to be installed." -ForegroundColor Red
@@ -106,3 +112,6 @@ if ($allGone) {
 }
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
+Write-Host "  Press Enter to exit..." -NoNewline
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+exit

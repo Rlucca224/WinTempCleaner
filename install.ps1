@@ -125,5 +125,6 @@ if ($allGood) {
 }
 Write-Host "  =============================================" -ForegroundColor Cyan
 Write-Host ""
-Read-Host "  Press Enter to exit"
+Write-Host "  Press Enter to exit..." -NoNewline
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 exit
